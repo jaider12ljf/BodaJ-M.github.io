@@ -1232,6 +1232,10 @@ body.ready .nav{opacity:1;pointer-events:auto}
     playIntro.style.pointerEvents = 'auto';
     introStarted = false;
   });
+  introVideo.addEventListener('loadedmetadata', () => {
+    intro.classList.remove('hidden');
+    document.body.classList.add('locked');
+  });
 
   /* reveal */
   let revealObserver;
@@ -1315,12 +1319,14 @@ body.ready .nav{opacity:1;pointer-events:auto}
   const marquee = $('#marquee');
   let marqueeX = 0;
   function animateMarquee(){
+    if(!marquee) return;
     marqueeX -= .25;
-    if(Math.abs(marqueeX) > marquee.scrollWidth/2) marqueeX = 0;
+    const halfWidth = marquee.scrollWidth / 2;
+    if(halfWidth > 0 && Math.abs(marqueeX) > halfWidth) marqueeX = 0;
     marquee.style.transform = `translate3d(${marqueeX}px,0,0)`;
     requestAnimationFrame(animateMarquee);
   }
-  requestAnimationFrame(animateMarquee);
+  if(marquee) requestAnimationFrame(animateMarquee);
 
   /* countdown */
   const eventDate = new Date('2026-12-17T18:00:00-05:00').getTime();
@@ -1575,8 +1581,11 @@ body.ready .nav{opacity:1;pointer-events:auto}
 
   probeGallery();
 
-  /* page state */
-  if(!introVideo.currentSrc){ intro?.classList.add('hidden'); document.body.classList.remove('locked'); }
+  /* page state
+     La intro siempre permanece visible al cargar. Solo se retira cuando
+     el usuario inicia el video y este termina, o si ocurre un error real. */
+  document.body.classList.add('locked');
+  intro?.classList.remove('hidden');
 })();
 </script>
 </body>
