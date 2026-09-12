@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0c1719">
-<meta name="description" content="Jhonathan & Manuela — 17 de diciembre de 2026">
-<title>Jhonathan & Manuela · 17.12.2026</title>
+<meta name="description" content="Jhonatan & Manuela — 17 de diciembre de 2026">
+<title>Jhonatan & Manuela · 17.12.2026</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1351,14 +1351,14 @@ body.ready .nav{opacity:1;pointer-events:auto}
   /* calendar */
   $('#addCalendar').addEventListener('click', () => {
     const lines = [
-      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Jhonathan & Manuela//Wedding//ES','CALSCALE:GREGORIAN','BEGIN:VEVENT',
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Jhonatan & Manuela//Wedding//ES','CALSCALE:GREGORIAN','BEGIN:VEVENT',
       'UID:jhonathan-manuela-20261217@invite','DTSTART;TZID=America/Bogota:20261217T180000','DTEND;TZID=America/Bogota:20261217T230000',
-      'SUMMARY:Jhonathan & Manuela — Nos casamos','LOCATION:Eventos San Joaquin, Sede La 33, Av. 33 #74B-243, Medellin, Antioquia',
-      'DESCRIPTION:Celebracion de boda de Jhonathan & Manuela.','END:VEVENT','END:VCALENDAR'
+      'SUMMARY:Jhonatan & Manuela — Nos casamos','LOCATION:Eventos San Joaquin, Sede La 33, Av. 33 #74B-243, Medellin, Antioquia',
+      'DESCRIPTION:Celebracion de boda de Jhonatan & Manuela.','END:VEVENT','END:VCALENDAR'
     ].join('\r\n');
     const blob = new Blob([lines], {type:'text/calendar;charset=utf-8'});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='Jhonathan-Manuela-17-diciembre-2026.ics'; document.body.appendChild(a); a.click(); a.remove();
+    const a = document.createElement('a'); a.href=url; a.download='Jhonatan-Manuela-17-diciembre-2026.ics'; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   });
 
@@ -1378,7 +1378,7 @@ body.ready .nav{opacity:1;pointer-events:auto}
   /* share */
   const shareSheet = $('#shareSheet');
   const INVITE_URL = (document.body.dataset.shareUrl || location.href);
-  const shareData = () => ({title:'Jhonathan & Manuela', text:'Nuestra invitación de boda · 17 de diciembre de 2026', url:INVITE_URL});
+  const shareData = () => ({title:'Jhonatan & Manuela', text:'Nuestra invitación de boda · 17 de diciembre de 2026', url:INVITE_URL});
   function openShare(){ shareSheet.classList.add('open'); shareSheet.setAttribute('aria-hidden','false'); document.body.classList.add('locked'); }
   function closeShare(){ shareSheet.classList.remove('open'); shareSheet.setAttribute('aria-hidden','true'); if(!document.querySelector('.lightbox.open') && !document.querySelector('.mobile-menu.open')) document.body.classList.remove('locked'); }
   if($('#shareInvite')){
@@ -1536,7 +1536,7 @@ body.ready .nav{opacity:1;pointer-events:auto}
       };
       lbImage.src = item.src;
       lbBg.style.backgroundImage = `url("${item.src}")`;
-      lbCaption.textContent = `Jhonathan & Manuela · ${galleryLabel(item.index)}`;
+      lbCaption.textContent = `Jhonatan & Manuela · ${galleryLabel(item.index)}`;
       preloadGalleryImage(nextAvailableIndex(item.index,1));
       preloadGalleryImage(nextAvailableIndex(item.index,2));
       requestAnimationFrame(() => {
@@ -1593,4 +1593,4 @@ body.ready .nav{opacity:1;pointer-events:auto}
 })();
 </script>
 </body>
-</html>
+
