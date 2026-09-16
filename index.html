@@ -51,10 +51,7 @@ img,video{display:block;max-width:100%}
 .intro{position:fixed;inset:0;z-index:9999;background:#000;display:block;opacity:1;visibility:visible;transition:opacity 1s var(--ease),visibility 1s}
 .intro.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .intro-stage{position:absolute;inset:0;overflow:hidden;background:#000}
-.intro-preview{position:absolute;inset:0;z-index:2;width:100%;height:100%;object-fit:cover;object-position:center;opacity:1;transition:opacity .55s var(--ease);background:#000}
-.intro-preview.hidden{opacity:0}
-.intro-video{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;object-position:center;background:transparent;opacity:0;transition:opacity .45s var(--ease)}
-.intro-video.is-visible{opacity:1}
+.intro-video{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;object-position:center;background:#000;opacity:1;display:block}
 .intro-shade{position:absolute;z-index:3;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 45%,rgba(0,0,0,.58));pointer-events:none}
 .intro-prompt{position:absolute;z-index:4;left:50%;bottom:max(28px,env(safe-area-inset-bottom) + 24px);transform:translateX(-50%);display:flex;align-items:center;gap:16px;color:rgba(255,255,255,.74);font:500 8px/1 var(--ui);letter-spacing:4px;text-transform:uppercase;cursor:pointer;border:0;background:none;padding:10px 0;text-shadow:0 2px 18px rgba(0,0,0,.45);transition:.4s ease}
 .intro-prompt::before,.intro-prompt::after{content:"";width:7px;height:7px;border-top:1px solid rgba(255,255,255,.68);border-right:1px solid rgba(255,255,255,.68)}
@@ -984,7 +981,6 @@ body.ready .nav{opacity:1;pointer-events:auto}
 
 <section class="intro" id="intro" aria-label="Introducción de la invitación">
   <div class="intro-stage">
-    <img id="introPreview" class="intro-preview" src="poster-desktop.jpg" alt="Vista previa de la invitación" decoding="async" fetchpriority="high">
     <video id="introVideo" class="intro-video" preload="auto" playsinline webkit-playsinline controlslist="nodownload noplaybackrate" aria-label="Video de apertura">
       <source id="introSource" src="Video.mp4" type="video/mp4">
     </video>
@@ -1206,7 +1202,6 @@ body.ready .nav{opacity:1;pointer-events:auto}
   const intro = $('#intro');
   const introVideo = $('#introVideo');
   const introSource = $('#introSource');
-  const introPreview = $('#introPreview');
   const playIntro = $('#playIntro');
   const heroMedia = $('#heroMedia');
   const backgroundMusic = $('#backgroundMusic');
@@ -1217,31 +1212,50 @@ body.ready .nav{opacity:1;pointer-events:auto}
 
   let introStarted = false;
   let introFinished = false;
-  let userOpenedMusic = false;
   let usingIntroFallback = false;
 
+  /*
+   * Selección del video del intro:
+   * - Teléfonos: Video2.mp4
+   * - PC / pantallas grandes: Video.mp4
+   *
+   * Primero usamos la proporción/tamaño del viewport y, cuando está disponible,
+   * la información del navegador para detectar que realmente es un móvil.
+   */
   function isPhoneViewport(){
     const w = window.innerWidth || document.documentElement.clientWidth || 0;
     const h = window.innerHeight || document.documentElement.clientHeight || 0;
-    const shortSide = Math.min(w,h);
-    const longSide = Math.max(w,h) || 1;
+    const shortSide = Math.min(w, h);
+    const longSide = Math.max(w, h) || 1;
     const ratio = shortSide / longSide;
-    return w <= 768 || (h > w && ratio < 0.84);
+
+    const mobileUA = Boolean(
+      navigator.userAgentData?.mobile ||
+      /Android|iPhone|iPod|Windows Phone|Mobile/i.test(navigator.userAgent)
+    );
+
+    /*
+     * Portrait estrecho = teléfono.
+     * También detectamos un teléfono en horizontal mediante UA/touch,
+     * evitando que una ventana estrecha de PC sea tomada como móvil.
+     */
+    const portraitPhoneShape = h > w && w <= 900 && ratio < 0.9;
+    const smallTouchScreen =
+      ('ontouchstart' in window || navigator.maxTouchPoints > 0) &&
+      shortSide <= 900 && longSide <= 1400;
+
+    return mobileUA || portraitPhoneShape || smallTouchScreen;
   }
 
   function configureIntroAsset(){
     const phone = isPhoneViewport();
     const videoPath = phone ? 'Video2.mp4' : 'Video.mp4';
-    const posterData = phone ? POSTER_MOBILE_DATA : POSTER_DESKTOP_DATA;
     usingIntroFallback = false;
 
-    /* Keep the correct preview visible immediately. The video is loaded behind it
-       and becomes visible only after the browser has decoded real video frames. */
-    introPreview.src = posterData;
-    introPreview.classList.remove('hidden');
-    introVideo.classList.remove('is-visible');
+    /* El video es ahora el único recurso visual del intro. */
+    introVideo.classList.add('is-visible');
     introSource.src = videoPath;
-    introVideo.poster = posterData;
+    introVideo.removeAttribute('poster');
     try { introVideo.load(); } catch(e) {}
   }
 
@@ -1251,7 +1265,7 @@ body.ready .nav{opacity:1;pointer-events:auto}
     document.body.classList.add('ready');
     document.body.classList.remove('locked');
     intro.classList.add('hidden');
-    setTimeout(() => { intro.remove(); }, 1100);
+    setTimeout(() => { if(intro?.isConnected) intro.remove(); }, 1100);
     revealAllVisible();
   }
 
@@ -1260,6 +1274,7 @@ body.ready .nav{opacity:1;pointer-events:auto}
     introStarted = true;
     playIntro.classList.add('waiting');
     playIntro.style.pointerEvents = 'none';
+
     try{
       introVideo.currentTime = 0;
       await introVideo.play();
@@ -1270,30 +1285,28 @@ body.ready .nav{opacity:1;pointer-events:auto}
     }
   }
 
-  playIntro.addEventListener('click', startIntro);
-  introVideo.addEventListener('ended', unlockPage);
-  introVideo.addEventListener('loadeddata', () => {
+  playIntro?.addEventListener('click', startIntro);
+  introVideo?.addEventListener('ended', unlockPage);
+  introVideo?.addEventListener('playing', () => {
     introVideo.classList.add('is-visible');
-    introPreview.classList.add('hidden');
-    intro.classList.remove('hidden');
+    intro?.classList.remove('hidden');
     document.body.classList.add('locked');
   });
-  introVideo.addEventListener('playing', () => {
-    introVideo.classList.add('is-visible');
-    introPreview.classList.add('hidden');
-  });
-  introVideo.addEventListener('error', () => {
+
+  introVideo?.addEventListener('error', () => {
     const activeSource = introSource.getAttribute('src') || '';
-    if(!usingIntroFallback && activeSource !== 'Video.mp4'){
+
+    /*
+     * Si Video2.mp4 falla, en móvil probamos Video.mp4 como respaldo.
+     * En PC no hay segundo fallback: se conserva el botón para reintentar.
+     */
+    if(!usingIntroFallback && activeSource === 'Video2.mp4'){
       usingIntroFallback = true;
-      introPreview.src = POSTER_DESKTOP_DATA;
-      introPreview.classList.remove('hidden');
-      introVideo.classList.remove('is-visible');
-      introVideo.poster = POSTER_DESKTOP_DATA;
       introSource.src = 'Video.mp4';
       try { introVideo.load(); } catch(e) {}
       return;
     }
+
     playIntro.textContent = 'Reintentar';
     playIntro.classList.remove('waiting');
     playIntro.style.pointerEvents = 'auto';
@@ -1302,10 +1315,19 @@ body.ready .nav{opacity:1;pointer-events:auto}
 
   configureIntroAsset();
 
+  /*
+   * Si cambia la orientación/tamaño antes de iniciar el video,
+   * se vuelve a seleccionar la fuente correcta.
+   */
+  let lastIntroSource = introSource.getAttribute('src') || '';
   window.addEventListener('resize', () => {
     if(introFinished || introStarted) return;
+
     const expected = isPhoneViewport() ? 'Video2.mp4' : 'Video.mp4';
-    if(introSource.getAttribute('src') !== expected) configureIntroAsset();
+    if(expected !== lastIntroSource){
+      lastIntroSource = expected;
+      configureIntroAsset();
+    }
   }, {passive:true});
 
   /* reveal */
@@ -1653,8 +1675,8 @@ body.ready .nav{opacity:1;pointer-events:auto}
   probeGallery();
 
   /* page state
-     La intro siempre permanece visible al cargar. Solo se retira cuando
-     el usuario inicia el video y este termina, o si ocurre un error real. */
+     La intro permanece visible hasta que el video termina.
+     El recurso visual se determina automáticamente al cargar. */
   document.body.classList.add('locked');
   intro?.classList.remove('hidden');
 })();
