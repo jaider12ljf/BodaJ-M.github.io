@@ -1,0 +1,14 @@
+{
+  "name": "Álbum de la boda · Jhonatan & Manuela",
+  "short_name": "Álbum J&M",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf7f0",
+  "theme_color": "#14243a",
+  "lang": "es",
+  "icons": [
+    {"src": "icono-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

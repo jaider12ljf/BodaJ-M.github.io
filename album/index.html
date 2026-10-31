@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14243a">
+<title>Nuestro álbum · Jhonatan &amp; Manuela</title>
+<meta name="description" content="Comparte tus fotos y videos de la boda de Jhonatan &amp; Manuela · 17 de diciembre de 2026.">
+<meta property="og:title" content="Nuestro álbum · Jhonatan &amp; Manuela">
+<meta property="og:description" content="Sube aquí tus fotos y videos de la boda.">
+<meta property="og:image" content="https://jaider12ljf.github.io/BodaJ-M.github.io/preview.jpg">
+<link rel="icon" href="../img/sello-sm.webp" type="image/webp">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icono-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Álbum J&amp;M">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap">
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js" integrity="sha384-rwykjmWNwVxboyFmvK9OXN0wj9hnMHA2aAHtits54DuACyCq0M2PrSNxhRb+hvXT" crossorigin="anonymous" defer></script>
+<style>
+:root{
+  --navy:#14243a;--navy-2:#1b2f4b;--navy-3:#0d1828;
+  --ivory:#f7f1e6;--paper:#fbf7f0;--sand:#efe5d3;
+  --gold:#a9814a;--gold-ink:#86663a;--champ:#e6cf9f;
+  --ink:#2a2420;--muted:#675b51;--line:rgba(42,36,32,.14);--line-dark:rgba(241,217,167,.18);
+  --serif:"Playfair Display",Georgia,serif;--script:"Great Vibes",cursive;--sans:"Montserrat",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);--gutter:clamp(16px,4vw,40px)
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100svh;background:var(--paper);color:var(--ink);font:400 15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
+img,video{display:block;max-width:100%}
+button,input{font:inherit;color:inherit}
+button,a,label{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.18)}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+[hidden]{display:none!important}
+.nums{font-variant-numeric:lining-nums tabular-nums}
+
+/* Encabezado */
+.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(10px + env(safe-area-inset-top)) var(--gutter) 10px;background:rgba(251,247,240,.9);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.brand img{width:38px;height:36px}
+.brand b{display:block;font:400 18px/1.1 var(--serif)}
+.brand small{display:block;font:600 10px/1.3 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
+.count{font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* Portada */
+.hero{position:relative;overflow:hidden;margin:16px var(--gutter) 0;border-radius:24px;padding:clamp(28px,6vw,56px) clamp(22px,5vw,56px);background:url("../img/sobre-textura.jpg") center/cover,var(--navy);color:var(--ivory);isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(160deg,rgba(13,24,40,.55),rgba(13,24,40,.88))}
+.hero .seal{width:64px;height:auto;margin-bottom:14px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+.hero h1{margin:0;font:400 clamp(34px,7vw,56px)/1.05 var(--serif)}
+.hero h1 span{display:block;margin-top:4px;font:400 .82em/1 var(--script);color:var(--champ)}
+.hero p{margin:14px 0 0;max-width:46ch;color:rgba(247,241,230,.82)}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;border:1px solid transparent;font:600 13px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;white-space:nowrap;transition:background-color .3s var(--ease),border-color .3s var(--ease),transform .3s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-gold{background:var(--champ);color:var(--navy)}
+.btn-gold:hover{background:#f1dcb0}
+.btn-line{border-color:rgba(241,217,167,.5);color:var(--ivory);background:rgba(255,255,255,.04)}
+.btn-line:hover{border-color:var(--champ)}
+.btn-navy{background:var(--navy);color:var(--ivory)}
+.btn-navy:hover{background:var(--navy-2)}
+.btn-ghost{border-color:var(--line);background:transparent;color:var(--ink)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* Filtros */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:18px var(--gutter) 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:#fff;font:600 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--ivory)}
+
+/* Galería */
+.grid{columns:2 150px;column-gap:8px;padding:12px var(--gutter) 120px}
+@media (min-width:720px){.grid{columns:4 200px;column-gap:12px}}
+.tile{position:relative;display:block;width:100%;margin:0 0 8px;padding:0;border:0;border-radius:14px;overflow:hidden;background:var(--sand);break-inside:avoid;cursor:zoom-in;animation:in .6s var(--ease) both}
+@media (min-width:720px){.tile{margin-bottom:12px}}
+@keyframes in{from{opacity:0;transform:translateY(14px) scale(.98)}}
+.tile img{width:100%;height:auto}
+.tile .play{position:absolute;right:8px;top:8px;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(13,24,40,.6);color:#fff}
+.tile .play svg{width:14px;height:14px}
+.tile .who{position:absolute;left:0;right:0;bottom:0;padding:22px 10px 8px;background:linear-gradient(180deg,transparent,rgba(13,24,40,.7));color:#fff;font:500 11px/1.3 var(--sans);text-align:left;opacity:0;transition:opacity .3s}
+.tile:hover .who,.tile:focus-visible .who{opacity:1}
+.more{display:flex;justify-content:center;padding:0 var(--gutter) 120px;margin-top:-90px}
+
+/* Estados */
+.state{margin:28px var(--gutter);padding:40px 24px;border:1px dashed rgba(169,129,74,.45);border-radius:20px;text-align:center;color:var(--muted)}
+.state h2{margin:0 0 6px;font:400 26px/1.2 var(--serif);color:var(--ink)}
+.state .script{font:400 40px/1 var(--script);color:var(--gold);margin-bottom:8px}
+
+/* Botón flotante */
+.fab{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;transform:translateX(-50%);box-shadow:0 16px 40px -12px rgba(13,24,40,.55)}
+
+/* Hojas (dialog) */
+dialog{border:0;padding:0;color:var(--ink)}
+dialog::backdrop{background:rgba(10,18,30,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.sheet{width:min(560px,100%);max-width:100%;max-height:92dvh;margin:auto auto 0;border-radius:24px 24px 0 0;background:var(--paper);overscroll-behavior:contain}
+@media (min-width:720px){.sheet{margin:auto;border-radius:24px}}
+.sheet[open]{animation:up .45s var(--ease)}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet-in{display:flex;flex-direction:column;gap:18px;padding:22px 22px calc(22px + env(safe-area-inset-bottom));max-height:92dvh;overflow:auto}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sheet-head h2{margin:0;font:400 26px/1.2 var(--serif)}
+.x{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff}
+.x svg{width:18px;height:18px}
+.field label,.field .lab{display:block;margin-bottom:8px;font:600 11px/1.3 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gold-ink)}
+.field input{width:100%;min-height:52px;padding:0 16px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:16px}
+.field input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.seg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media (min-width:480px){.seg{grid-template-columns:repeat(4,1fr)}}
+.seg label{position:relative;display:grid;place-items:center;min-height:46px;border:1px solid var(--line);border-radius:12px;background:#fff;font:600 12px/1 var(--sans);letter-spacing:.06em;cursor:pointer}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg input:checked+span{color:var(--ivory)}
+.seg label:has(input:checked){background:var(--navy);border-color:var(--navy)}
+.seg label:has(input:focus-visible){outline:2px solid var(--gold);outline-offset:2px}
+.previews{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
+.pv{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--sand)}
+.pv img{width:100%;height:100%;object-fit:cover}
+.pv .st{position:absolute;inset:auto 0 0 0;padding:4px 6px;background:rgba(13,24,40,.7);color:#fff;font:600 10px/1.2 var(--sans);text-align:center}
+.pv.done .st{background:rgba(54,110,72,.85)}
+.pv.err .st{background:rgba(160,52,40,.88)}
+.bar{height:4px;border-radius:4px;background:var(--sand);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s var(--ease)}
+.msg{margin:0;font-size:14px;color:var(--muted)}
+.msg.ok{color:#2f6b45}.msg.err{color:#a0342b}
+
+/* Visor */
+.viewer{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;background:rgba(10,18,30,.97);color:var(--ivory);overscroll-behavior:contain}
+.viewer[open]{animation:fade .35s var(--ease)}
+@keyframes fade{from{opacity:0}}
+.v-top,.v-bot{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px}
+.v-top{top:0;padding-top:calc(12px + env(safe-area-inset-top))}
+.v-bot{bottom:0;padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+.v-meta b{display:block;font:400 18px/1.2 var(--serif)}
+.v-meta small{font:500 12px/1.4 var(--sans);color:rgba(247,241,230,.7)}
+.v-stage{position:absolute;inset:72px 10px 88px;display:grid;place-items:center}
+.v-stage img,.v-stage video{max-width:100%;max-height:100%;border-radius:8px}
+.vbtn{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;border:1px solid rgba(241,217,167,.35);background:rgba(255,255,255,.05);color:var(--ivory)}
+.vbtn svg{width:20px;height:20px}
+.v-nav{display:flex;gap:10px}
+.toast{position:fixed;left:50%;bottom:96px;z-index:200;transform:translate(-50%,10px);padding:12px 20px;border-radius:999px;background:var(--navy);color:var(--ivory);font:500 14px/1.3 var(--sans);opacity:0;pointer-events:none;transition:opacity .35s,transform .35s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v3.5A2.5 2.5 0 006.5 21h11a2.5 2.5 0 002.5-2.5V15"/></g></symbol>
+    <symbol id="i-cam" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></g></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-l" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-r" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-dl" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <a class="brand" href="../" aria-label="Volver a la invitación de Jhonatan y Manuela"><img src="../img/sello-sm.webp" alt="" width="38" height="36"><span><b translate="no">Jhonatan &amp; Manuela</b><small class="nums">17 · 12 · 2026</small></span></a>
+  <span class="count nums" id="count" aria-live="polite"></span>
+</header>
+
+<section class="hero" aria-labelledby="t">
+  <img class="seal" src="../img/sello.webp" alt="" width="400" height="380">
+  <h1 id="t">Nuestro álbum <span>compartido</span></h1>
+  <p>Cada foto que tomes es un regalo para nosotros. Súbela aquí y todos podremos revivir este día juntos.</p>
+  <div class="cta" id="cta">
+    <button class="btn btn-gold" type="button" id="pickBtn"><svg aria-hidden="true"><use href="#i-up"/></svg>Subir fotos y videos</button>
+    <button class="btn btn-line" type="button" id="camBtn"><svg aria-hidden="true"><use href="#i-cam"/></svg>Tomar foto</button>
+  </div>
+  <input class="sr-only" type="file" id="filePick" accept="image/*,video/*" multiple tabindex="-1">
+  <input class="sr-only" type="file" id="fileCam" accept="image/*" capture="environment" tabindex="-1">
+</section>
+
+<div class="chips" role="toolbar" aria-label="Filtrar por momento" id="chips">
+  <button class="chip" type="button" data-m="" aria-pressed="true">Todos</button>
+  <button class="chip" type="button" data-m="preboda" aria-pressed="false">Preboda</button>
+  <button class="chip" type="button" data-m="ceremonia" aria-pressed="false">Ceremonia</button>
+  <button class="chip" type="button" data-m="recepcion" aria-pressed="false">Recepción</button>
+  <button class="chip" type="button" data-m="fiesta" aria-pressed="false">Fiesta</button>
+</div>
+
+<div class="state" id="stateSoon" hidden>
+  <div class="script">Muy pronto</div>
+  <h2>El álbum se abrirá muy pronto</h2>
+  <p>Vuelve a este enlace el día de la boda para compartir tus fotos.</p>
+</div>
+<div class="state" id="stateEmpty" hidden>
+  <div class="script">Sé el primero</div>
+  <h2>Aún no hay recuerdos aquí</h2>
+  <p>Comparte la primera foto de este momento.</p>
+</div>
+<div class="state" id="stateError" hidden>
+  <h2>No pudimos cargar el álbum</h2>
+  <p>Revisa tu conexión y vuelve a intentarlo.</p>
+  <button class="btn btn-navy" type="button" id="retry" style="margin-top:16px">Reintentar</button>
+</div>
+
+<main class="grid" id="grid" aria-label="Fotos y videos de la boda"></main>
+<div class="more" id="moreWrap" hidden><button class="btn btn-ghost" type="button" id="more">Ver más recuerdos</button></div>
+
+<button class="btn btn-navy fab" type="button" id="fab" hidden><svg aria-hidden="true"><use href="#i-up"/></svg>Compartir fotos</button>
+
+<!-- Hoja de subida -->
+<dialog class="sheet" id="sheet" aria-labelledby="sheetT">
+  <form class="sheet-in" id="upForm" method="dialog">
+    <div class="sheet-head">
+      <h2 id="sheetT">Compartir recuerdos</h2>
+      <button class="x" type="button" id="sheetX" aria-label="Cerrar"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="field">
+      <label for="who">Tu nombre</label>
+      <input id="who" name="who" autocomplete="name" maxlength="60" placeholder="Ej.: Tía Marta…" required>
+    </div>
+    <fieldset class="field" style="border:0;padding:0;margin:0">
+      <legend class="lab">¿De qué momento son?</legend>
+      <div class="seg">
+        <label><input type="radio" name="m" value="preboda"><span>Preboda</span></label>
+        <label><input type="radio" name="m" value="ceremonia"><span>Ceremonia</span></label>
+        <label><input type="radio" name="m" value="recepcion"><span>Recepción</span></label>
+        <label><input type="radio" name="m" value="fiesta"><span>Fiesta</span></label>
+      </div>
+    </fieldset>
+    <div class="previews" id="previews"></div>
+    <div class="bar" aria-hidden="true"><i id="barI"></i></div>
+    <p class="msg" id="upMsg" role="status" aria-live="polite"></p>
+    <div class="cta" style="margin-top:0">
+      <button class="btn btn-navy" type="submit" id="sendBtn" style="flex:1">Subir</button>
+      <button class="btn btn-ghost" type="button" id="addMore">Agregar más</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Visor -->
+<dialog class="viewer" id="viewer" aria-label="Recuerdo ampliado">
+  <div class="v-top">
+    <div class="v-meta"><b id="vWho"></b><small id="vWhen"></small></div>
+    <button class="vbtn" type="button" id="vClose" aria-label="Cerrar"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="v-stage" id="vStage"></div>
+  <div class="v-bot">
+    <button class="btn btn-line" type="button" id="vDl"><svg aria-hidden="true"><use href="#i-dl"/></svg>Descargar</button>
+    <div class="v-nav">
+      <button class="vbtn" type="button" id="vPrev" aria-label="Anterior"><svg aria-hidden="true"><use href="#i-l"/></svg></button>
+      <button class="vbtn" type="button" id="vNext" aria-label="Siguiente"><svg aria-hidden="true"><use href="#i-r"/></svg></button>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+addEventListener('DOMContentLoaded', () => {
+  'use strict';
+  const $ = s => document.querySelector(s);
+  const cfg = window.ALBUM_CONFIG || {};
+  const MOMENTS = {preboda:'Preboda', ceremonia:'Ceremonia', recepcion:'Recepción', fiesta:'Fiesta'};
+  const PAGE = 48;
+  const MAX_VIDEO = 50 * 1024 * 1024;
+  const grid = $('#grid');
+  let items = [], filter = '', loadedAll = false, db = null, base = '';
+
+  const toastEl = $('#toast');
+  let tt;
+  function toast(m){ toastEl.textContent = m; toastEl.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toastEl.classList.remove('on'), 2800); }
+  function show(id){ ['stateSoon','stateEmpty','stateError'].forEach(s => $('#' + s).hidden = s !== id); }
+
+  /* ---------- Conexión ---------- */
+  if(!cfg.supabaseUrl || !cfg.supabaseKey || !window.supabase){
+    show('stateSoon');
+    $('#cta').hidden = true;
+    $('#chips').hidden = true;
+    return;
+  }
+  db = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey, {auth:{persistSession:false}});
+  base = cfg.supabaseUrl.replace(/\/$/, '') + '/storage/v1/object/public/album/';
+  const pub = path => base + path;
+
+  /* ---------- Galería ---------- */
+  const fmt = new Intl.DateTimeFormat('es-CO', {day:'numeric', month:'short', hour:'numeric', minute:'2-digit'});
+  function tile(r){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tile';
+    b.dataset.id = r.id;
+    const img = new Image();
+    img.src = pub(r.miniatura);
+    img.alt = (r.tipo === 'video' ? 'Video' : 'Foto') + ' de ' + r.invitado + ' · ' + MOMENTS[r.momento];
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    if(r.ancho && r.alto){ img.width = 400; img.height = Math.round(400 * r.alto / r.ancho); }
+    b.appendChild(img);
+    if(r.tipo === 'video'){
+      const p = document.createElement('span');
+      p.className = 'play';
+      p.innerHTML = '<svg aria-hidden="true"><use href="#i-play"/></svg>';
+      b.appendChild(p);
+    }
+    const who = document.createElement('span');
+    who.className = 'who';
+    who.textContent = r.invitado;
+    b.appendChild(who);
+    b.addEventListener('click', () => openViewer(r.id));
+    return b;
+  }
+  function visible(){ return filter ? items.filter(r => r.momento === filter) : items; }
+  function render(){
+    grid.textContent = '';
+    const list = visible();
+    list.forEach(r => grid.appendChild(tile(r)));
+    $('#count').textContent = items.length ? items.length + (items.length === 1 ? ' recuerdo' : ' recuerdos') : '';
+    show(list.length ? null : 'stateEmpty');
+    $('#moreWrap').hidden = loadedAll || !items.length;
+  }
+  async function load(more){
+    const from = more ? items.length : 0;
+    const {data, error} = await db.from('recuerdos').select('*').order('created_at', {ascending:false}).range(from, from + PAGE - 1);
+    if(error){ if(!items.length) show('stateError'); else toast('No se pudieron cargar más recuerdos.'); return; }
+    items = more ? items.concat(data) : data;
+    loadedAll = data.length < PAGE;
+    render();
+  }
+  $('#more').addEventListener('click', () => load(true));
+  $('#retry').addEventListener('click', () => load(false));
+  $('#chips').addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if(!c) return;
+    filter = c.dataset.m;
+    document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', String(x === c)));
+    render();
+  });
+  load(false);
+
+  /* Recuerdos nuevos en vivo */
+  db.channel('recuerdos').on('postgres_changes', {event:'INSERT', schema:'public', table:'recuerdos'}, ({new:r}) => {
+    if(r.oculto || items.some(x => x.id === r.id)) return;
+    items.unshift(r);
+    render();
+  }).subscribe();
+  setInterval(() => { if(!document.hidden && !uploading) load(false); }, 60000);
+
+  /* El botón flotante aparece al bajar */
+  const fab = $('#fab');
+  new IntersectionObserver(([en]) => { fab.hidden = en.isIntersecting; }).observe($('.hero'));
+  fab.addEventListener('click', () => $('#filePick').click());
+
+  /* ---------- Subida ---------- */
+  const sheet = $('#sheet');
+  const who = $('#who');
+  let queue = [], uploading = false;
+  try{ who.value = localStorage.getItem('album-nombre') || ''; }catch{}
+
+  function defaultMoment(){
+    const now = Date.now();
+    const t = h => Date.parse('2026-12-17T' + h + ':00-05:00');
+    if(now < t('17:45')) return 'preboda';
+    if(now < t('19:15')) return 'ceremonia';
+    if(now < t('21:30')) return 'recepcion';
+    return 'fiesta';
+  }
+  function addFiles(list){
+    for(const f of list){
+      if(!/^(image|video)\//.test(f.type) && !/\.(heic|heif)$/i.test(f.name)){ toast('Solo fotos y videos.'); continue; }
+      if(f.type.startsWith('video/') && f.size > MAX_VIDEO){ toast('Un video pesa más de 50 MB: recórtalo y vuelve a intentarlo.'); continue; }
+      const el = document.createElement('div');
+      el.className = 'pv';
+      const img = new Image();
+      img.alt = '';
+      if(f.type.startsWith('image/')) img.src = URL.createObjectURL(f);
+      el.appendChild(img);
+      const st = document.createElement('span');
+      st.className = 'st';
+      st.textContent = f.type.startsWith('video/') ? 'Video' : 'Lista';
+      el.appendChild(st);
+      $('#previews').appendChild(el);
+      queue.push({file:f, el, st, done:false});
+      if(f.type.startsWith('video/')) videoThumb(f).then(t => { if(t) img.src = URL.createObjectURL(t.blob); });
+    }
+    updateSend();
+  }
+  function updateSend(){
+    const n = queue.filter(q => !q.done).length;
+    $('#sendBtn').textContent = n ? 'Subir ' + n + (n === 1 ? ' recuerdo' : ' recuerdos') : 'Listo';
+    $('#sendBtn').disabled = uploading;
+  }
+  function openSheet(files){
+    if(!sheet.open){
+      queue = []; $('#previews').textContent = ''; $('#upMsg').textContent = ''; $('#upMsg').className = 'msg'; $('#barI').style.width = '0';
+      const m = defaultMoment();
+      sheet.querySelector(`input[name=m][value=${m}]`).checked = true;
+      sheet.showModal();
+    }
+    addFiles(files);
+  }
+  $('#pickBtn').addEventListener('click', () => $('#filePick').click());
+  $('#camBtn').addEventListener('click', () => $('#fileCam').click());
+  $('#addMore').addEventListener('click', () => $('#filePick').click());
+  ['#filePick','#fileCam'].forEach(id => $(id).addEventListener('change', e => { if(e.target.files.length) openSheet([...e.target.files]); e.target.value = ''; }));
+  $('#sheetX').addEventListener('click', () => { if(!uploading) sheet.close(); });
+  sheet.addEventListener('cancel', e => { if(uploading) e.preventDefault(); });
+
+  /* Imagen → JPEG redimensionado (y miniatura) */
+  async function toJpeg(src, max, q){
+    const bmp = src instanceof ImageBitmap ? src : await createImageBitmap(src, {imageOrientation:'from-image'});
+    const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas');
+    c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', q));
+    return {blob, w:c.width, h:c.height, bmp};
+  }
+  function videoThumb(file){
+    return new Promise(resolve => {
+      const v = document.createElement('video');
+      v.muted = true; v.playsInline = true; v.preload = 'metadata';
+      const url = URL.createObjectURL(file);
+      const fail = () => { URL.revokeObjectURL(url); resolve(null); };
+      v.onerror = fail;
+      v.onloadedmetadata = () => { v.currentTime = Math.min(.6, (v.duration || 1) / 3); };
+      v.onseeked = () => {
+        const k = Math.min(1, 640 / Math.max(v.videoWidth, v.videoHeight));
+        const c = document.createElement('canvas');
+        c.width = Math.round(v.videoWidth * k) || 640; c.height = Math.round(v.videoHeight * k) || 360;
+        c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+        c.toBlob(b => { URL.revokeObjectURL(url); resolve(b ? {blob:b, w:v.videoWidth, h:v.videoHeight} : null); }, 'image/jpeg', .8);
+      };
+      v.src = url;
+      setTimeout(fail, 8000);
+    });
+  }
+  function placeholderThumb(){
+    const c = document.createElement('canvas'); c.width = 640; c.height = 640;
+    const g = c.getContext('2d'); g.fillStyle = '#14243a'; g.fillRect(0, 0, 640, 640);
+    g.fillStyle = '#e6cf9f'; g.font = '48px Georgia'; g.textAlign = 'center'; g.fillText('J&M', 320, 340);
+    return new Promise(r => c.toBlob(b => r({blob:b, w:640, h:640}), 'image/jpeg', .8));
+  }
+  const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
+
+  async function uploadOne(q, name, moment){
+    const f = q.file;
+    const id = uid();
+    let main, thumb, tipo, ext, ctype;
+    if(f.type.startsWith('video/')){
+      tipo = 'video'; main = {blob:f}; ctype = f.type || 'video/mp4';
+      ext = ctype === 'video/quicktime' ? 'mov' : ctype === 'video/webm' ? 'webm' : 'mp4';
+      thumb = (await videoThumb(f)) || await placeholderThumb();
+      main.w = thumb.w; main.h = thumb.h;
+    }else{
+      tipo = 'foto'; ext = 'jpg'; ctype = 'image/jpeg';
+      try{
+        main = await toJpeg(f, 2560, .86);
+        thumb = await toJpeg(main.bmp, 640, .8);
+      }catch{
+        main = {blob:f, w:null, h:null}; ctype = f.type || 'image/heic'; ext = (f.name.split('.').pop() || 'jpg').toLowerCase();
+        thumb = await placeholderThumb();
+      }
+    }
+    const ruta = 'r/' + id + '.' + ext, miniatura = 't/' + id + '.jpg';
+    q.st.textContent = 'Subiendo…';
+    let r = await db.storage.from('album').upload(ruta, main.blob, {contentType:ctype, upsert:false, cacheControl:'31536000'});
+    if(r.error) throw r.error;
+    r = await db.storage.from('album').upload(miniatura, thumb.blob, {contentType:'image/jpeg', upsert:false, cacheControl:'31536000'});
+    if(r.error) throw r.error;
+    const row = {invitado:name, momento:moment, tipo, ruta, miniatura, ancho:main.w || thumb.w, alto:main.h || thumb.h};
+    const ins = await db.from('recuerdos').insert(row).select().single();
+    if(ins.error) throw ins.error;
+    return ins.data;
+  }
+
+  $('#upForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const pending = queue.filter(q => !q.done);
+    if(!pending.length){ sheet.close(); return; }
+    const name = who.value.trim();
+    if(!name){ who.focus(); $('#upMsg').textContent = 'Escribe tu nombre para que sepamos de quién es el recuerdo.'; $('#upMsg').className = 'msg err'; return; }
+    try{ localStorage.setItem('album-nombre', name); }catch{}
+    const moment = sheet.querySelector('input[name=m]:checked')?.value || defaultMoment();
+    uploading = true; updateSend();
+    $('#upMsg').className = 'msg'; $('#upMsg').textContent = 'Subiendo tus recuerdos… no cierres esta pantalla.';
+    let ok = 0, fail = 0;
+    for(const [i, q] of pending.entries()){
+      try{
+        const row = await uploadOne(q, name, moment);
+        q.done = true; q.el.classList.add('done'); q.st.textContent = 'Listo ✓'; ok++;
+        if(!items.some(x => x.id === row.id)){ items.unshift(row); render(); }
+      }catch(err){
+        q.el.classList.add('err'); q.st.textContent = 'Falló'; fail++;
+      }
+      $('#barI').style.width = Math.round((i + 1) / pending.length * 100) + '%';
+    }
+    uploading = false; updateSend();
+    if(fail){
+      $('#upMsg').className = 'msg err';
+      $('#upMsg').textContent = ok + ' subidos, ' + fail + ' no se pudieron subir. Revisa tu conexión y toca «Subir» otra vez.';
+      queue.filter(q => !q.done).forEach(q => { q.el.classList.remove('err'); q.st.textContent = 'Reintentar'; });
+    }else{
+      $('#upMsg').className = 'msg ok';
+      $('#upMsg').textContent = '¡Gracias, ' + name + '! Tus recuerdos ya están en el álbum.';
+      setTimeout(() => { if(!uploading) sheet.close(); }, 1600);
+      toast('¡Gracias por compartir!');
+    }
+  });
+
+  /* ---------- Visor ---------- */
+  const viewer = $('#viewer');
+  let cur = 0;
+  function showItem(i){
+    const list = visible();
+    if(!list.length) return;
+    cur = (i + list.length) % list.length;
+    const r = list[cur];
+    const stage = $('#vStage');
+    stage.textContent = '';
+    if(r.tipo === 'video'){
+      const v = document.createElement('video');
+      v.src = pub(r.ruta); v.controls = true; v.playsInline = true; v.poster = pub(r.miniatura);
+      stage.appendChild(v);
+    }else{
+      const img = new Image();
+      img.src = pub(r.ruta);
+      img.alt = 'Foto de ' + r.invitado;
+      stage.appendChild(img);
+    }
+    $('#vWho').textContent = r.invitado;
+    $('#vWhen').textContent = MOMENTS[r.momento] + ' · ' + fmt.format(new Date(r.created_at));
+  }
+  function openViewer(id){
+    const i = visible().findIndex(r => r.id === id);
+    showItem(i);
+    viewer.showModal();
+  }
+  $('#vClose').addEventListener('click', () => viewer.close());
+  viewer.addEventListener('close', () => { $('#vStage').textContent = ''; });
+  $('#vPrev').addEventListener('click', () => showItem(cur - 1));
+  $('#vNext').addEventListener('click', () => showItem(cur + 1));
+  viewer.addEventListener('keydown', e => { if(e.key === 'ArrowRight') showItem(cur + 1); if(e.key === 'ArrowLeft') showItem(cur - 1); });
+  let tx = null;
+  viewer.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, {passive:true});
+  viewer.addEventListener('touchend', e => {
+    if(tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if(Math.abs(dx) > 50) showItem(cur + (dx < 0 ? 1 : -1));
+  }, {passive:true});
+  $('#vDl').addEventListener('click', async () => {
+    const r = visible()[cur];
+    try{
+      const res = await fetch(pub(r.ruta));
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = Object.assign(document.createElement('a'), {href:url, download:'boda-JM-' + r.id.slice(0, 8) + '.' + r.ruta.split('.').pop()});
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }catch{ window.open(pub(r.ruta), '_blank', 'noopener'); }
+  });
+});
+</script>
+</body>
+</html>
