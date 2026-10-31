@@ -163,8 +163,9 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
 .hz-kicker{margin:0;font:600 12px/1.5 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--champ)}
 .hz-script{margin:12px 0 0;font-size:clamp(38px,5vw,60px);color:var(--champ)}
 .hz h1{margin:4px 0 0;font:400 clamp(44px,7.6vw,112px)/1 var(--serif);letter-spacing:-.015em}
-.hz h1 .amp{font:400 .62em/1 var(--script);color:var(--champ);margin:0 .14em}
+.hz h1 .amp{font:400 .66em/1 var(--script);color:var(--champ);margin:0 .24em}
 .hz-date{margin:14px 0 0;font:500 13px/1.5 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:rgba(247,241,230,.84)}
+.hz-shade{position:absolute;inset:auto 0 0 0;height:38%;background:linear-gradient(180deg,transparent,rgba(13,24,40,.78));opacity:0;pointer-events:none}
 .hz-caption{position:absolute;left:0;right:0;bottom:max(34px,calc(env(safe-area-inset-bottom) + 20px));z-index:2;margin:0;padding:0 20px;text-align:center;font:400 clamp(18px,2vw,24px)/1.4 var(--serif);font-style:italic;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.45);opacity:0}
 
 /* ---------- Invitación ---------- */
@@ -178,15 +179,15 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
 .vp{position:relative;background:var(--navy);color:var(--ivory)}
 .vp-stage{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:96px var(--gutter);text-align:center}
 .vp blockquote{margin:0}
-.vp-text{max-width:22ch;margin:0 auto;font:400 clamp(34px,5.6vw,76px)/1.18 var(--serif);letter-spacing:-.01em}
-.vp-text .wd{color:rgba(247,241,230,.2);transition:color .25s linear}
+.vp-text{text-wrap:balance;max-width:22ch;margin:0 auto;font:400 clamp(34px,5.6vw,76px)/1.18 var(--serif);letter-spacing:-.01em}
+.vp-text .wd{color:rgba(247,241,230,.28);transition:color .25s linear}
 .vp-text .wd.on{color:var(--ivory)}
 .vp cite{display:block;margin-top:30px;font:600 12px/1.4 var(--sans);font-style:normal;letter-spacing:.24em;text-transform:uppercase;color:var(--champ)}
 
 /* ---------- 4. Tarjetas apiladas ---------- */
 .stack{position:relative}
 .card-sec{position:relative;min-height:100svh;border-radius:28px 28px 0 0;box-shadow:0 -24px 60px -20px rgba(0,0,0,.35);overflow:hidden}
-.card-sec:first-child{border-radius:0}
+.card-sec:first-child{border-radius:0;box-shadow:none}
 .card-in{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:clamp(88px,10vw,120px) var(--gutter) clamp(64px,8vw,96px);transform-origin:50% 0}
 .big-date{margin:22px 0 0;font:400 clamp(64px,11vw,150px)/.95 var(--serif);letter-spacing:-.02em;color:var(--ivory)}
 .big-date span{color:var(--champ);font-size:.5em;vertical-align:.32em;margin:0 .18em}
@@ -295,6 +296,8 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
 
 /* ---------- Música + aviso ---------- */
 .music{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:600;display:flex;align-items:center;gap:10px;min-height:52px;padding:0 18px 0 14px;border-radius:999px;border:1px solid rgba(241,217,167,.4);background:rgba(20,36,58,.88);color:var(--ivory);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 18px 40px -14px rgba(13,24,40,.6);font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.js .music{opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.js .music.is-on,.no-motion .music{opacity:1;transform:none;pointer-events:auto}
 .bars{display:flex;align-items:flex-end;gap:3px;height:16px}
 .bars i{width:2.5px;height:5px;border-radius:2px;background:var(--champ)}
 .music.is-playing .bars i{animation:eq 1s ease-in-out infinite}
@@ -317,8 +320,8 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
   .rsvp-card{grid-template-columns:1fr}
   .rsvp-photo{min-height:0;aspect-ratio:3/2}
   .map{min-height:300px}
-  .hz-photo{clip-path:inset(50% 6% 5% 6% round 22px)}
-  .hz-title{height:50%}
+  .hz-photo{clip-path:inset(55% 6% 5% 6% round 22px)}
+  .hz-title{height:52%}
   .envelope{margin-top:0}
 }
 @media (max-width:560px){
@@ -419,7 +422,8 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
           <img src="img/g/foto-10.jpg" alt="Jhonatan y Manuela caminan de la mano por un sendero del jardín" width="2000" height="1333">
         </picture>
       </figure>
-      <p class="hz-caption">6:00 p. m. · Medellín, Antioquia</p>
+      <div class="hz-shade" aria-hidden="true"></div>
+      <p class="hz-caption">6:00&nbsp;p.&nbsp;m. · Medellín, Antioquia</p>
     </div>
   </section>
 
@@ -459,7 +463,7 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
           <p class="label">Guarda la fecha</p>
           <h2 class="sr-only" id="t-fecha">Jueves 17 de diciembre de 2026</h2>
           <p class="big-date" aria-hidden="true">17<span>·</span>12<span>·</span>2026</p>
-          <p class="date-line">Jueves 17 de diciembre · 6:00 p. m.</p>
+          <p class="date-line">Jueves 17 de diciembre · 6:00&nbsp;p.&nbsp;m.</p>
           <div class="countdown" role="timer" aria-label="Cuenta regresiva para la boda">
             <div><strong id="cd-d">--</strong><span>Días</span></div>
             <div><strong id="cd-h">--</strong><span>Horas</span></div>
@@ -483,7 +487,7 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
             <div class="place-card">
               <h3>Eventos San Joaquín <em>Sede La 33</em></h3>
               <address>Av. 33 #74B-243<br>Medellín, Antioquia, Colombia</address>
-              <p class="when">Jueves 17 de diciembre de 2026 · 6:00 p. m.<small>Ceremonia y recepción en el mismo lugar.</small></p>
+              <p class="when">Jueves 17 de diciembre de 2026 · 6:00&nbsp;p.&nbsp;m.<small>Ceremonia y recepción en el mismo lugar.</small></p>
               <div class="actions">
                 <a class="btn btn-primary" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Eventos+San+Joaquin+Sede+La+33,+Av.+33+%2374B-243,+Medellin,+Antioquia&amp;query_place_id=ChIJr8Qcy_spRI4R9O-HwWwL2FE"><svg aria-hidden="true"><use href="#i-pin"/></svg>Google Maps</a>
                 <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://waze.com/ul?q=Av.%2033%20%2374B-243%2C%20Medell%C3%ADn&amp;navigate=yes">Waze</a>
@@ -528,7 +532,6 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
             <div class="actions">
               <a class="btn btn-primary" href="https://forms.gle/zYPN92xZQ7WB1Jhm8" target="_blank" rel="noopener">Confirmar asistencia<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </div>
-            <p class="form-note">Se abre en una pestaña nueva.</p>
           </div>
         </div>
       </div>
@@ -905,15 +908,15 @@ addEventListener('DOMContentLoaded', () => {
     .fromTo(canvas, {scale:1, opacity:1}, {scale:1.1, opacity:0, ease:'power2.in', duration:.2, immediateRender:false}, .8)
     .fromTo('#seqPoster', {opacity:1}, {opacity:0, duration:.2, immediateRender:false}, .8);
 
-  ScrollTrigger.create({trigger:'#inicio', start:'top 65%', onEnter:() => nav.classList.add('is-on'), onLeaveBack:() => nav.classList.remove('is-on')});
 
   /* 2 · Portada estilo Apple: el título entra y la foto crece a pantalla completa */
   gsap.from('.hz-title > *', {y:40, opacity:0, duration:1.2, ease:'expo.out', stagger:.08,
     scrollTrigger:{trigger:'#inicio', start:'top 60%'}});
   gsap.timeline({scrollTrigger:{trigger:'#inicio', start:'top top', end:'+=140%', pin:true, scrub:.6}})
-    .to('.hz-title', {yPercent:-30, opacity:0, ease:'power1.in', duration:.4}, .05)
+    .to('.hz-title', {yPercent:-30, opacity:0, ease:'power1.in', duration:.3}, 0)
     .to('.hz-photo', {clipPath:'inset(0% 0% 0% 0% round 0px)', ease:'power2.inOut', duration:.7}, 0)
     .to('.hz-photo img', {scale:1, ease:'power2.inOut', duration:.7}, 0)
+    .to('.hz-shade', {opacity:1, duration:.2}, .62)
     .to('.hz-caption', {opacity:1, y:0, duration:.2}, .72)
     .to({}, {duration:.1});
   gsap.set('.hz-caption', {y:20});
@@ -926,6 +929,10 @@ addEventListener('DOMContentLoaded', () => {
       vpSpans.forEach((s, i) => s.classList.toggle('on', i < n));
     }
   });
+
+  /* Barra superior y música: aparecen cuando termina la portada (después de crear los anclajes) */
+  ScrollTrigger.create({trigger:'#invitacion', start:'top 92%', onEnter:() => nav.classList.add('is-on'), onLeaveBack:() => nav.classList.remove('is-on')});
+  ScrollTrigger.create({trigger:'#inicio', start:'top 80%', onEnter:() => musicBtn.classList.add('is-on'), onLeaveBack:() => musicBtn.classList.remove('is-on')});
 
   /* Títulos por palabra, textos que suben y fotos con zoom */
   $$('[data-split]').forEach(el => gsap.from($$('.w>span', el), {

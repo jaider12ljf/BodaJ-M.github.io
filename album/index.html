@@ -69,7 +69,7 @@ button{cursor:pointer}
 .btn[disabled]{opacity:.5;cursor:not-allowed}
 
 /* Filtros */
-.chips{display:flex;gap:8px;overflow-x:auto;padding:18px var(--gutter) 4px;scrollbar-width:none}
+.chips{display:flex;gap:8px;overflow-x:auto;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding:18px var(--gutter) 4px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:#fff;font:600 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--ivory)}
@@ -172,7 +172,6 @@ dialog::backdrop{background:rgba(10,18,30,.55);-webkit-backdrop-filter:blur(4px)
 </header>
 
 <section class="hero" aria-labelledby="t">
-  <img class="seal" src="../img/sello.webp" alt="" width="400" height="380">
   <h1 id="t">Nuestro álbum <span>compartido</span></h1>
   <p>Cada foto que tomes es un regalo para nosotros. Súbela aquí y todos podremos revivir este día juntos.</p>
   <div class="cta" id="cta">
