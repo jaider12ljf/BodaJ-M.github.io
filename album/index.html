@@ -142,6 +142,12 @@ dialog::backdrop{background:rgba(10,18,30,.55);-webkit-backdrop-filter:blur(4px)
 .vbtn{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;border:1px solid rgba(241,217,167,.35);background:rgba(255,255,255,.05);color:var(--ivory)}
 .vbtn svg{width:20px;height:20px}
 .v-nav{display:flex;gap:10px}
+.install{display:flex;align-items:center;gap:12px;margin:14px var(--gutter) 0;padding:14px 16px;border:1px solid rgba(169,129,74,.4);border-radius:16px;background:#fff}
+.install img{width:44px;height:44px;border-radius:10px}
+.install p{margin:0;flex:1;font:500 13px/1.45 var(--sans);color:var(--muted)}
+.install p b{display:block;font:600 14px/1.3 var(--sans);color:var(--ink)}
+.install .btn{min-height:44px;padding:0 16px;font-size:12px}
+.ios-steps{margin:0;padding-left:20px;line-height:1.9}
 .toast{position:fixed;left:50%;bottom:96px;z-index:200;transform:translate(-50%,10px);padding:12px 20px;border-radius:999px;background:var(--navy);color:var(--ivory);font:500 14px/1.3 var(--sans);opacity:0;pointer-events:none;transition:opacity .35s,transform .35s}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -176,6 +182,12 @@ dialog::backdrop{background:rgba(10,18,30,.55);-webkit-backdrop-filter:blur(4px)
   <input class="sr-only" type="file" id="filePick" accept="image/*,video/*" multiple tabindex="-1">
   <input class="sr-only" type="file" id="fileCam" accept="image/*" capture="environment" tabindex="-1">
 </section>
+
+<div class="install" id="install" hidden>
+  <img src="icono-192.png" alt="" width="44" height="44">
+  <p><b>Instala el álbum en tu celular</b>Ábrelo como una app, sin buscar el enlace.</p>
+  <button class="btn btn-navy" type="button" id="installBtn">Instalar</button>
+</div>
 
 <div class="chips" role="toolbar" aria-label="Filtrar por momento" id="chips">
   <button class="chip" type="button" data-m="" aria-pressed="true">Todos</button>
@@ -252,6 +264,21 @@ dialog::backdrop{background:rgba(10,18,30,.55);-webkit-backdrop-filter:blur(4px)
   </div>
 </dialog>
 
+<dialog class="sheet" id="iosSheet" aria-labelledby="iosT">
+  <div class="sheet-in">
+    <div class="sheet-head">
+      <h2 id="iosT">Instalar en iPhone</h2>
+      <button class="x" type="button" id="iosX" aria-label="Cerrar"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <ol class="ios-steps">
+      <li>Abre este enlace en <b>Safari</b>.</li>
+      <li>Toca el botón <b>Compartir</b> (el cuadrito con la flecha hacia arriba).</li>
+      <li>Elige <b>Agregar a pantalla de inicio</b> y luego <b>Agregar</b>.</li>
+    </ol>
+    <p class="msg">Aparecerá el ícono del sello J&amp;M en tu pantalla, como cualquier app.</p>
+  </div>
+</dialog>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -263,6 +290,26 @@ addEventListener('DOMContentLoaded', () => {
   const PAGE = 48;
   const MAX_VIDEO = 50 * 1024 * 1024;
   const grid = $('#grid');
+
+  /* ---------- Instalar como app ---------- */
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  let deferredPrompt = null;
+  if(!standalone){
+    if(isIOS) $('#install').hidden = false;
+    addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; $('#install').hidden = false; });
+  }
+  $('#installBtn').addEventListener('click', async () => {
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      const {outcome} = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      if(outcome === 'accepted') $('#install').hidden = true;
+    }else $('#iosSheet').showModal();
+  });
+  $('#iosX').addEventListener('click', () => $('#iosSheet').close());
+  addEventListener('appinstalled', () => { $('#install').hidden = true; });
   let items = [], filter = '', loadedAll = false, db = null, base = '';
 
   const toastEl = $('#toast');
