@@ -498,8 +498,8 @@ addEventListener('DOMContentLoaded', () => {
     }else{
       tipo = 'foto'; ext = 'jpg'; ctype = 'image/jpeg';
       try{
-        main = await toJpeg(f, 2560, .86);
-        thumb = await toJpeg(main.bmp, 640, .8);
+        main = await toJpeg(f, 2048, .82);
+        thumb = await toJpeg(main.bmp, 480, .78);
       }catch{
         main = {blob:f, w:null, h:null}; ctype = f.type || 'image/heic'; ext = (f.name.split('.').pop() || 'jpg').toLowerCase();
         thumb = await placeholderThumb();

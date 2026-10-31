@@ -287,6 +287,8 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
 .env-mono{font:400 clamp(26px,3.4vw,38px)/1 var(--serif);letter-spacing:.06em}
 .env-mono i{font:400 1.1em/1 var(--script);font-style:normal;color:var(--gold)}
 .env-date{font:600 11px/1 var(--sans);letter-spacing:.24em;color:var(--gold-ink)}
+.no-motion .env-card{transform:translateY(-60%)}
+.no-motion .envelope .seal{display:none}
 .env-front{position:absolute;inset:0;z-index:2;border-radius:10px;clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%)}
 .envelope-flap{position:absolute;left:0;right:0;top:0;z-index:3;height:58%;clip-path:polygon(0 0,100% 0,50% 100%);border-radius:10px 10px 0 0;transform-origin:50% 0;filter:brightness(1.22)}
 .env-front svg,.envelope-flap svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
@@ -332,7 +334,7 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
   .map{min-height:300px}
   .hz-photo{clip-path:inset(55% 6% 5% 6% round 22px)}
   .hz-title{height:52%}
-  .envelope{margin-top:0}
+  .envelope{margin-top:72px}
 }
 @media (max-width:560px){
   body{font-size:15px}
@@ -1003,11 +1005,12 @@ addEventListener('DOMContentLoaded', () => {
   gsap.fromTo('.band-row--b', {xPercent:-38}, {xPercent:4, ease:'none', scrollTrigger:{trigger:'.band', start:'top bottom', end:'bottom top', scrub:true}});
 
   /* 6 · El sobre de "Lluvia de sobres" se abre y sale la tarjeta */
-  gsap.timeline({scrollTrigger:{trigger:'#envelope', start:'top 82%', end:'bottom 40%', scrub:.6}})
+  gsap.timeline({scrollTrigger:{trigger:'#envelope', start:'top 85%', end:'center 62%', scrub:.6}})
     .to('#envelope .seal', {opacity:0, scale:.6, rotation:-12, duration:.18}, .12)
     .to('.envelope-flap', {rotationX:178, duration:.35, ease:'power1.inOut'}, .2)
     .set('.envelope-flap', {zIndex:0}, .38)
-    .to('.env-card', {yPercent:-46, duration:.4, ease:'power2.out'}, .52);
+    .to('.env-card', {yPercent:-60, duration:.4, ease:'power2.out'}, .52)
+    .fromTo('.env-card > *', {opacity:0}, {opacity:1, duration:.12}, .84);
 
   /* Botones magnéticos (solo con mouse) */
   gsap.matchMedia().add('(pointer: fine)', () => {
