@@ -40,6 +40,10 @@ drop policy if exists "subir recuerdos" on public.recuerdos;
 create policy "subir recuerdos" on public.recuerdos
   for insert to anon, authenticated with check (oculto = false);
 
+-- Permisos de la API (por si el proyecto no expone tablas nuevas automáticamente)
+grant usage on schema public to anon, authenticated;
+grant select, insert on public.recuerdos to anon, authenticated;
+
 -- Avisos en vivo cuando alguien sube algo
 do $$ begin
   alter publication supabase_realtime add table public.recuerdos;

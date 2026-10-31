@@ -242,6 +242,16 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
 .shot.is-land{aspect-ratio:3/2}
 .shot img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease)}
 .shot:hover img{transform:scale(1.04)}
+@media (pointer:coarse),(max-width:899px){
+  .gal-track{width:auto;height:min(58svh,520px);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .gal-track::-webkit-scrollbar{display:none}
+  .gal-track .shot{scroll-snap-align:start}
+  .gal-track::after{content:"";flex:none;width:1px}
+}
+.gal-dots{display:none;justify-content:center;gap:8px;margin-top:18px}
+@media (pointer:coarse),(max-width:899px){.gal-dots{display:flex}}
+.gal-dots i{width:7px;height:7px;border-radius:50%;background:rgba(42,36,32,.18);transition:background-color .3s,transform .3s}
+.gal-dots i.on{background:var(--gold);transform:scale(1.25)}
 .no-motion .gal-track{flex-wrap:wrap;width:auto;height:auto}
 .no-motion .shot{height:auto;width:calc(50% - 10px)}
 .no-motion .gal-hint{display:none}
@@ -546,15 +556,16 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
           <p class="label">Recuerdos seleccionados</p>
           <h2 class="h2" data-split id="t-gal">Una historia para volver a vivir</h2>
         </div>
-        <p class="gal-hint" aria-hidden="true">Desliza <i></i></p>
+        <p class="gal-hint" aria-hidden="true">Desliza hacia el lado <i></i></p>
       </div>
       <div class="gal-track" id="gallery"></div>
+      <div class="gal-dots" id="galDots" aria-hidden="true"></div>
     </div>
   </section>
 
   <div class="band" aria-hidden="true">
-    <p class="band-row">Jhonatan <em>&amp;</em> Manuela <i>·</i> 17 · 12 · 2026 <i>·</i> Jhonatan <em>&amp;</em> Manuela <i>·</i> 17 · 12 · 2026 <i>·</i></p>
-    <p class="band-row band-row--b">Guiados por Dios <i>·</i> Un nuevo capítulo <i>·</i> Guiados por Dios <i>·</i> Un nuevo capítulo <i>·</i></p>
+    <p class="band-row">Un nuevo capítulo <i>·</i> 17 · 12 · 2026 <i>·</i> Un nuevo capítulo <i>·</i> 17 · 12 · 2026 <i>·</i></p>
+    <p class="band-row band-row--b">Guiados por Dios <i>·</i> Medellín <i>·</i> Guiados por Dios <i>·</i> Medellín <i>·</i></p>
   </div>
 
   <!-- 6 · Lluvia de sobres -->
@@ -736,6 +747,18 @@ addEventListener('DOMContentLoaded', () => {
     grid.appendChild(b);
   });
 
+  const dots = $('#galDots');
+  PHOTOS.forEach(() => dots.appendChild(document.createElement('i')));
+  const syncDots = () => {
+    const shots = [...grid.children];
+    const x = grid.scrollLeft + grid.clientWidth * .3;
+    let k = 0;
+    shots.forEach((el, i) => { if(el.offsetLeft - grid.offsetLeft <= x) k = i; });
+    [...dots.children].forEach((d, i) => d.classList.toggle('on', i === k));
+  };
+  grid.addEventListener('scroll', syncDots, {passive:true});
+  syncDots();
+
   const lb = $('#lightbox');
   const lbImg = $('#lbImg');
   let cur = 0, lastFocus = null;
@@ -883,7 +906,7 @@ addEventListener('DOMContentLoaded', () => {
 
   let lenis = null;
   if(window.Lenis){
-    lenis = new Lenis({lerp:.09, wheelMultiplier:.9, prevent: node => !!node.closest?.('dialog, .menu')});
+    lenis = new Lenis({lerp:.09, wheelMultiplier:.9, prevent: node => !!node.closest?.('dialog, .menu, .gal-track')});
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -964,12 +987,15 @@ addEventListener('DOMContentLoaded', () => {
   gsap.from('.countdown > div', {y:30, opacity:0, stagger:.08, duration:.9, ease:'expo.out', scrollTrigger:{trigger:'.countdown', start:'top 90%'}});
   gsap.from('.swatches li', {y:30, opacity:0, scale:.8, stagger:.1, duration:.9, ease:'back.out(1.6)', scrollTrigger:{trigger:'.swatches', start:'top 90%'}});
 
-  /* 5 · Galería horizontal anclada */
+  /* 5 · Galería: anclada al scroll en PC; en celular, carrusel que se desliza con el dedo */
   const track = $('#gallery');
-  const dist = () => Math.max(0, track.scrollWidth - innerWidth);
-  gsap.to(track, {
-    x:() => -dist(), ease:'none',
-    scrollTrigger:{trigger:'#galeria', start:'top top', end:() => '+=' + Math.round(dist() * 1.1), pin:true, scrub:.5, invalidateOnRefresh:true}
+  gsap.matchMedia().add('(pointer: fine) and (min-width: 900px)', () => {
+    const dist = () => Math.max(0, track.scrollWidth - innerWidth);
+    const tw = gsap.to(track, {
+      x:() => -dist(), ease:'none',
+      scrollTrigger:{trigger:'#galeria', start:'top top', end:() => '+=' + Math.round(dist() * 1.1), pin:true, scrub:.5, invalidateOnRefresh:true}
+    });
+    return () => tw.scrollTrigger?.kill();
   });
 
   /* Franja de texto gigante */
