@@ -180,8 +180,7 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
 .vp-stage{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:96px var(--gutter);text-align:center}
 .vp blockquote{margin:0}
 .vp-text{text-wrap:balance;max-width:22ch;margin:0 auto;font:400 clamp(34px,5.6vw,76px)/1.18 var(--serif);letter-spacing:-.01em}
-.vp-text .wd{color:rgba(247,241,230,.28);transition:color .25s linear}
-.vp-text .wd.on{color:var(--ivory)}
+.vp-text .wd{display:inline-block;color:var(--ivory)}
 .vp cite{display:block;margin-top:30px;font:600 12px/1.4 var(--sans);font-style:normal;letter-spacing:.24em;text-transform:uppercase;color:var(--champ)}
 
 /* ---------- 4. Tarjetas apiladas ---------- */
@@ -271,13 +270,6 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
 .lb-nav{position:absolute;left:0;right:0;bottom:18px;display:flex;justify-content:center;gap:14px}
 ::view-transition-group(photo){animation-duration:.6s;animation-timing-function:var(--ease)}
 
-/* ---------- Franja ---------- */
-.band{overflow:hidden;padding:clamp(56px,8vw,110px) 0;background:var(--paper);border-top:1px solid var(--line)}
-.band-row{margin:0;white-space:nowrap;font:400 clamp(56px,10vw,150px)/1.05 var(--serif);letter-spacing:-.02em;color:var(--navy)}
-.band-row em{font:400 1em/1 var(--script);color:var(--gold)}
-.band-row i{font-style:normal;color:var(--gold);margin:0 .25em}
-.band-row--b{font-style:italic;color:transparent;-webkit-text-stroke:1px rgba(20,36,58,.45);margin-top:.1em}
-.band-row--b i{-webkit-text-stroke:0;color:var(--gold)}
 
 /* ---------- 6. Lluvia de sobres ---------- */
 .gift-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,7vw,110px);align-items:center}
@@ -319,7 +311,7 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
 
 /* Cifras siempre alineadas (el atajo font: reinicia font-variant) */
-.big-date,.date-line,.countdown strong,.hz-date,.when,.deadline,.env-date,.footer-date,.band-row{font-variant-numeric:lining-nums tabular-nums}
+.big-date,.date-line,.countdown strong,.hz-date,.when,.deadline,.env-date,.footer-date{font-variant-numeric:lining-nums tabular-nums}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1020px){
@@ -424,7 +416,6 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
     <div class="hz-stage">
       <div class="hz-title">
         <p class="hz-kicker">Un nuevo capítulo, guiados por Dios</p>
-        <p class="hz-script script">Nos casamos</p>
         <h1 id="titulo" translate="no">Jhonatan<span class="amp">&amp;</span>Manuela</h1>
         <p class="hz-date">Jueves · 17 · Diciembre · 2026</p>
       </div>
@@ -502,7 +493,7 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
               <p class="when">Jueves 17 de diciembre de 2026 · 6:00&nbsp;p.&nbsp;m.<small>Ceremonia y recepción en el mismo lugar.</small></p>
               <div class="actions">
                 <a class="btn btn-primary" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Eventos+San+Joaquin+Sede+La+33,+Av.+33+%2374B-243,+Medellin,+Antioquia&amp;query_place_id=ChIJr8Qcy_spRI4R9O-HwWwL2FE"><svg aria-hidden="true"><use href="#i-pin"/></svg>Google Maps</a>
-                <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://waze.com/ul?q=Av.%2033%20%2374B-243%2C%20Medell%C3%ADn&amp;navigate=yes">Waze</a>
+                <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://waze.com/ul?ll=6.2389222%2C-75.5927168&amp;navigate=yes&amp;zoom=17">Waze</a>
               </div>
               <button class="text-link" id="copyAddr" type="button">Copiar dirección</button>
             </div>
@@ -565,10 +556,6 @@ a,button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(169,129,74,.
     </div>
   </section>
 
-  <div class="band" aria-hidden="true">
-    <p class="band-row">Un nuevo capítulo <i>·</i> 17 · 12 · 2026 <i>·</i> Un nuevo capítulo <i>·</i> 17 · 12 · 2026 <i>·</i></p>
-    <p class="band-row band-row--b">Guiados por Dios <i>·</i> Medellín <i>·</i> Guiados por Dios <i>·</i> Medellín <i>·</i></p>
-  </div>
 
   <!-- 6 · Lluvia de sobres -->
   <section class="section gift on-dark" id="regalo" aria-labelledby="t-gift">
@@ -896,7 +883,6 @@ addEventListener('DOMContentLoaded', () => {
   if(!motion){
     document.documentElement.classList.add('no-motion');
     nav.classList.add('is-on');
-    vpSpans.forEach(s => s.classList.add('on'));
     $('.hz-photo').style.clipPath = 'none';
     $('.hz-title').style.background = 'linear-gradient(180deg,rgba(13,24,40,.75),transparent)';
     return;
@@ -947,13 +933,9 @@ addEventListener('DOMContentLoaded', () => {
   gsap.set('.hz-caption', {y:20});
 
   /* 3 · Versículo que se ilumina palabra por palabra */
-  ScrollTrigger.create({
-    trigger:'#versiculo', start:'top top', end:'+=140%', pin:true,
-    onUpdate(self){
-      const n = Math.ceil(self.progress * 1.2 * vpSpans.length);
-      vpSpans.forEach((s, i) => s.classList.toggle('on', i < n));
-    }
-  });
+  gsap.timeline({scrollTrigger:{trigger:'#versiculo', start:'top 65%'}})
+    .from(vpSpans, {opacity:0, y:24, filter:'blur(6px)', duration:.9, ease:'power3.out', stagger:.09})
+    .from('#versiculo cite', {opacity:0, y:14, duration:.7, ease:'power3.out'}, '-=.3');
 
   /* Barra superior y música: aparecen cuando termina la portada (después de crear los anclajes) */
   ScrollTrigger.create({trigger:'#invitacion', start:'top 92%', onEnter:() => nav.classList.add('is-on'), onLeaveBack:() => nav.classList.remove('is-on')});
@@ -1000,9 +982,6 @@ addEventListener('DOMContentLoaded', () => {
     return () => tw.scrollTrigger?.kill();
   });
 
-  /* Franja de texto gigante */
-  gsap.fromTo('.band-row:not(.band-row--b)', {xPercent:4}, {xPercent:-38, ease:'none', scrollTrigger:{trigger:'.band', start:'top bottom', end:'bottom top', scrub:true}});
-  gsap.fromTo('.band-row--b', {xPercent:-38}, {xPercent:4, ease:'none', scrollTrigger:{trigger:'.band', start:'top bottom', end:'bottom top', scrub:true}});
 
   /* 6 · El sobre de "Lluvia de sobres" se abre y sale la tarjeta */
   gsap.timeline({scrollTrigger:{trigger:'#envelope', start:'top 85%', end:'center 62%', scrub:.6}})
